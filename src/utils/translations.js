@@ -1,0 +1,186 @@
+const translations = {
+  id: {
+    // Navbar
+    'nav.home': 'Beranda',
+    'nav.about': 'Tentang',
+    'nav.lang': 'EN',
+    'nav.appName': 'DeepFake Detector',
+
+    // Hero
+    'hero.badge': 'Berbasis EfficientNet-B0',
+    'hero.title': 'Sistem Deteksi Video',
+    'hero.titleHighlight': 'DeepFake',
+    'hero.subtitle': 'Analisis keaslian video menggunakan kecerdasan buatan dengan arsitektur EfficientNet-B0. Unggah video Anda dan dapatkan hasil analisis dalam hitungan detik.',
+    'hero.stat1Value': '2.000',
+    'hero.stat1Label': 'Dataset',
+    'hero.stat2Value': 'EfficientNet-B0',
+    'hero.stat2Label': 'Arsitektur Model',
+    'hero.stat3Value': '4 Format',
+    'hero.stat3Label': 'Video Didukung',
+
+    // Upload
+    'upload.title': 'Unggah Video untuk Analisis',
+    'upload.description': 'Seret dan lepas video ke area ini, atau klik untuk memilih file dari perangkat Anda.',
+    'upload.browse': 'Pilih File',
+    'upload.formats': 'Format: MP4, AVI, MOV, WEBM',
+    'upload.maxSize': 'Maks. 50 MB • Maks. 60 detik',
+    'upload.selected': 'File terpilih:',
+    'upload.size': 'Ukuran:',
+    'upload.analyze': 'Mulai Analisis',
+    'upload.analyzing': 'Menganalisis...',
+    'upload.changeFile': 'Ganti File',
+    'upload.errorFormat': 'Format file tidak didukung. Gunakan MP4, AVI, MOV, atau WEBM.',
+    'upload.errorSize': 'Ukuran file melebihi batas 50 MB.',
+    'upload.errorGeneric': 'Terjadi kesalahan saat memproses file.',
+
+    // Progress
+    'progress.title': 'Proses Analisis',
+    'progress.step1': 'Unggah',
+    'progress.step2': 'Ekstraksi Frame',
+    'progress.step3': 'Deteksi Wajah',
+    'progress.step4': 'Analisis AI',
+    'progress.step5': 'Selesai',
+
+    // Result
+    'result.title': 'Hasil Analisis',
+    'result.label': 'Klasifikasi',
+    'result.real': 'REAL',
+    'result.fake': 'FAKE',
+    'result.confidence': 'Confidence Score',
+    'result.frames': 'Frame Dianalisis',
+    'result.majorityVote': 'Majority Vote',
+    'result.reset': 'Analisis Video Lain',
+    'result.realDesc': 'Video ini terdeteksi sebagai video asli berdasarkan analisis AI.',
+    'result.fakeDesc': 'Video ini terdeteksi sebagai video manipulasi (deepfake) berdasarkan analisis AI.',
+    'result.confidenceLabel': 'Tingkat Keyakinan',
+
+    // Tooltip explanations
+    'tooltip.confidence': 'Confidence Score adalah tingkat keyakinan AI terhadap hasil analisis. Semakin tinggi persentasenya (mendekati 100%), semakin yakin sistem bahwa video tersebut asli atau palsu.',
+    'tooltip.frames': 'Frame adalah gambar diam yang diambil dari video. Sistem menganalisis banyak frame untuk mendapatkan hasil yang lebih akurat. Semakin banyak frame yang dianalisis, semakin andal hasilnya.',
+    'tooltip.majorityVote': 'Majority Voting adalah metode pengambilan keputusan. Setiap frame dianalisis secara terpisah, lalu sistem menghitung berapa banyak frame yang terdeteksi REAL vs FAKE. Hasil akhir ditentukan oleh mayoritas (terbanyak).',
+    'tooltip.classification': 'Klasifikasi adalah hasil akhir analisis AI. REAL berarti video terdeteksi asli, sedangkan FAKE berarti video terdeteksi sebagai hasil manipulasi (deepfake).',
+    'tooltip.confidenceBar': 'Bar ini menunjukkan seberapa yakin AI terhadap hasil analisis. Semakin penuh bar-nya, semakin tinggi keyakinan sistem.',
+
+    // About
+    'about.heroTitle': 'Tentang Sistem',
+    'about.heroSubtitle': 'Pelajari cara kerja sistem deteksi video DeepFake kami dan teknologi yang mendasarinya.',
+    'about.pipelineTitle': 'Cara Kerja Sistem',
+    'about.pipelineSubtitle': 'Sistem ini memproses video melalui 5 tahapan pipeline untuk menghasilkan prediksi yang akurat.',
+    'about.step1Title': 'Unggah Video',
+    'about.step1Desc': 'Pengguna mengunggah file video dalam format MP4, AVI, MOV, atau WEBM dengan ukuran maksimal 50 MB.',
+    'about.step2Title': 'Ekstraksi Frame',
+    'about.step2Desc': 'Video dipecah menjadi frame-frame individual menggunakan OpenCV untuk analisis lebih lanjut.',
+    'about.step3Title': 'Deteksi Wajah',
+    'about.step3Desc': 'Setiap frame diproses menggunakan MTCNN untuk mendeteksi dan mengekstrak area wajah.',
+    'about.step4Title': 'Analisis AI',
+    'about.step4Desc': 'Wajah yang terdeteksi dianalisis menggunakan model EfficientNet-B0 yang telah dilatih pada dataset FaceForensics++.',
+    'about.step5Title': 'Hasil Prediksi',
+    'about.step5Desc': 'Sistem menghasilkan prediksi REAL atau FAKE berdasarkan majority voting dari seluruh frame yang dianalisis.',
+    'about.techTitle': 'Teknologi yang Digunakan',
+    'about.techSubtitle': 'Kombinasi teknologi mutakhir untuk hasil deteksi yang akurat dan andal.',
+    'about.researchTitle': 'Informasi Penelitian',
+    'about.researchSubtitle': 'Sistem ini dikembangkan sebagai bagian dari tugas akhir (skripsi) program studi S1 Teknologi Informasi.',
+    'about.university': 'Universitas Muhammadiyah Mataram',
+    'about.program': 'Program Studi S1 Teknologi Informasi',
+    'about.year': 'Tahun 2026',
+    'about.thesisLabel': 'Skripsi',
+
+    // Footer
+    'footer.copyright': '© 2026 DeepFake Detector.',
+    'footer.university': 'Universitas Muhammadiyah Mataram',
+    'footer.builtWith': 'Dibangun dengan',
+  },
+  en: {
+    // Navbar
+    'nav.home': 'Home',
+    'nav.about': 'About',
+    'nav.lang': 'ID',
+    'nav.appName': 'DeepFake Detector',
+
+    // Hero
+    'hero.badge': 'Powered by EfficientNet-B0',
+    'hero.title': 'Video Detection System for',
+    'hero.titleHighlight': 'DeepFake',
+    'hero.subtitle': 'Analyze video authenticity using artificial intelligence with EfficientNet-B0 architecture. Upload your video and get analysis results in seconds.',
+    'hero.stat1Value': '2,000',
+    'hero.stat1Label': 'Dataset',
+    'hero.stat2Value': 'EfficientNet-B0',
+    'hero.stat2Label': 'Model Architecture',
+    'hero.stat3Value': '4 Formats',
+    'hero.stat3Label': 'Video Supported',
+
+    // Upload
+    'upload.title': 'Upload Video for Analysis',
+    'upload.description': 'Drag and drop a video here, or click to select a file from your device.',
+    'upload.browse': 'Choose File',
+    'upload.formats': 'Formats: MP4, AVI, MOV, WEBM',
+    'upload.maxSize': 'Max. 50 MB • Max. 60 seconds',
+    'upload.selected': 'Selected file:',
+    'upload.size': 'Size:',
+    'upload.analyze': 'Start Analysis',
+    'upload.analyzing': 'Analyzing...',
+    'upload.changeFile': 'Change File',
+    'upload.errorFormat': 'Unsupported file format. Please use MP4, AVI, MOV, or WEBM.',
+    'upload.errorSize': 'File size exceeds the 50 MB limit.',
+    'upload.errorGeneric': 'An error occurred while processing the file.',
+
+    // Progress
+    'progress.title': 'Analysis Process',
+    'progress.step1': 'Upload',
+    'progress.step2': 'Frame Extraction',
+    'progress.step3': 'Face Detection',
+    'progress.step4': 'AI Analysis',
+    'progress.step5': 'Complete',
+
+    // Result
+    'result.title': 'Analysis Result',
+    'result.label': 'Classification',
+    'result.real': 'REAL',
+    'result.fake': 'FAKE',
+    'result.confidence': 'Confidence Score',
+    'result.frames': 'Frames Analyzed',
+    'result.majorityVote': 'Majority Vote',
+    'result.reset': 'Analyze Another Video',
+    'result.realDesc': 'This video is detected as authentic based on AI analysis.',
+    'result.fakeDesc': 'This video is detected as manipulated (deepfake) based on AI analysis.',
+    'result.confidenceLabel': 'Confidence Level',
+
+    // Tooltip explanations
+    'tooltip.confidence': 'Confidence Score is how certain the AI is about its analysis. The higher the percentage (closer to 100%), the more confident the system is that the video is real or fake.',
+    'tooltip.frames': 'Frames are still images extracted from the video. The system analyzes many frames for more accurate results. More frames analyzed means more reliable results.',
+    'tooltip.majorityVote': 'Majority Voting is the decision-making method. Each frame is analyzed separately, then the system counts how many frames are detected as REAL vs FAKE. The final result is determined by the majority.',
+    'tooltip.classification': 'Classification is the final AI analysis result. REAL means the video is detected as authentic, while FAKE means the video is detected as manipulated (deepfake).',
+    'tooltip.confidenceBar': 'This bar shows how confident the AI is about its analysis result. The fuller the bar, the higher the system\'s confidence.',
+
+    // About
+    'about.heroTitle': 'About the System',
+    'about.heroSubtitle': 'Learn how our DeepFake video detection system works and the technology behind it.',
+    'about.pipelineTitle': 'How It Works',
+    'about.pipelineSubtitle': 'The system processes video through a 5-stage pipeline to produce accurate predictions.',
+    'about.step1Title': 'Upload Video',
+    'about.step1Desc': 'Users upload a video file in MP4, AVI, MOV, or WEBM format with a maximum size of 50 MB.',
+    'about.step2Title': 'Frame Extraction',
+    'about.step2Desc': 'The video is split into individual frames using OpenCV for further analysis.',
+    'about.step3Title': 'Face Detection',
+    'about.step3Desc': 'Each frame is processed using MTCNN to detect and extract facial regions.',
+    'about.step4Title': 'AI Analysis',
+    'about.step4Desc': 'Detected faces are analyzed using the EfficientNet-B0 model trained on the FaceForensics++ dataset.',
+    'about.step5Title': 'Prediction Result',
+    'about.step5Desc': 'The system produces a REAL or FAKE prediction based on majority voting across all analyzed frames.',
+    'about.techTitle': 'Technologies Used',
+    'about.techSubtitle': 'A combination of cutting-edge technologies for accurate and reliable detection results.',
+    'about.researchTitle': 'Research Information',
+    'about.researchSubtitle': 'This system was developed as part of an undergraduate thesis in Information Technology.',
+    'about.university': 'Universitas Muhammadiyah Mataram',
+    'about.program': 'Bachelor of Information Technology',
+    'about.year': 'Year 2026',
+    'about.thesisLabel': 'Thesis',
+
+    // Footer
+    'footer.copyright': '© 2026 DeepFake Detector.',
+    'footer.university': 'Universitas Muhammadiyah Mataram',
+    'footer.builtWith': 'Built with',
+  },
+};
+
+export default translations;
