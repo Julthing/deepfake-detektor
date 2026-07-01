@@ -2,80 +2,110 @@ import { useState, useCallback, useRef } from 'react';
 
 const STEPS = ['uploading', 'extracting', 'detecting', 'analyzing', 'done'];
 
-// Simulated delays per step (ms)
-const STEP_DELAYS = {
-  uploading: 1200,
-  extracting: 1800,
-  detecting: 2000,
-  analyzing: 2500,
-  done: 500,
-};
+// URL backend Hugging Face Spaces (Production) atau /api/predict (Local Proxy)
+const API_URL = 'https://zuldika-deepfake-detection-api.hf.space/api/predict';
 
 /**
- * Generates a mock analysis result.
- * @returns {Object} Mock result
- */
-function generateMockResult() {
-  const isReal = Math.random() > 0.5;
-  const confidence = isReal
-    ? Math.floor(Math.random() * 15) + 82 // 82-96 for REAL
-    : Math.floor(Math.random() * 20) + 75; // 75-94 for FAKE
-  const framesAnalyzed = Math.floor(Math.random() * 80) + 40; // 40-120
-
-  return {
-    label: isReal ? 'REAL' : 'FAKE',
-    confidence,
-    frames_analyzed: framesAnalyzed,
-    majority_vote: isReal
-      ? `${Math.floor(framesAnalyzed * (confidence / 100))}/${framesAnalyzed} REAL`
-      : `${Math.floor(framesAnalyzed * (confidence / 100))}/${framesAnalyzed} FAKE`,
-  };
-}
-
-/**
- * Hook for managing video analysis state and mock API simulation.
- * Replace simulateAnalysis() with real fetch() call when Flask backend is ready.
+ * Hook for managing video analysis state with real Flask API.
+ * Mengirim video ke backend Flask dan menampilkan progress steps.
  */
 export default function useVideoAnalysis() {
   const [status, setStatus] = useState('idle'); // idle | uploading | extracting | detecting | analyzing | done | error
   const [currentStep, setCurrentStep] = useState(-1);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const abortRef = useRef(false);
+  const abortRef = useRef(null); // AbortController reference
 
   const analyze = useCallback(async (file) => {
     if (!file) return;
 
-    abortRef.current = false;
+    // Reset state
     setError(null);
     setResult(null);
 
-    // Walk through each step with simulated delays
-    for (let i = 0; i < STEPS.length; i++) {
-      if (abortRef.current) return;
+    // Buat AbortController untuk cancel request
+    const controller = new AbortController();
+    abortRef.current = controller;
 
-      const step = STEPS[i];
-      setStatus(step);
-      setCurrentStep(i);
+    try {
+      // Step 1: Uploading
+      setStatus('uploading');
+      setCurrentStep(0);
 
-      await new Promise((resolve) => setTimeout(resolve, STEP_DELAYS[step]));
+      // Siapkan FormData
+      const formData = new FormData();
+      formData.append('video', file);
+
+      // Step 2: Extracting (tampilkan saat menunggu upload selesai)
+      // Kita simulasi step progress karena backend memproses semuanya sekaligus
+      const progressTimer = setTimeout(() => {
+        if (!controller.signal.aborted) {
+          setStatus('extracting');
+          setCurrentStep(1);
+        }
+      }, 1500);
+
+      const detectTimer = setTimeout(() => {
+        if (!controller.signal.aborted) {
+          setStatus('detecting');
+          setCurrentStep(2);
+        }
+      }, 3500);
+
+      const analyzeTimer = setTimeout(() => {
+        if (!controller.signal.aborted) {
+          setStatus('analyzing');
+          setCurrentStep(3);
+        }
+      }, 6000);
+
+      // Kirim ke Flask backend
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
+      });
+
+      // Bersihkan timer
+      clearTimeout(progressTimer);
+      clearTimeout(detectTimer);
+      clearTimeout(analyzeTimer);
+
+      // Parse response
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || `Server error: ${response.status}`);
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Step 5: Done — tampilkan hasil
+      setResult(data);
+      setCurrentStep(4);
+      setStatus('done');
+
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        // Request dibatalkan oleh user
+        return;
+      }
+
+      console.error('Analysis error:', err);
+      setError(err.message || 'Terjadi kesalahan saat menganalisis video');
+      setStatus('error');
     }
-
-    if (abortRef.current) return;
-
-    // Generate mock result
-    // TODO: Replace with real API call:
-    // const formData = new FormData();
-    // formData.append('video', file);
-    // const response = await fetch('/api/predict', { method: 'POST', body: formData });
-    // const data = await response.json();
-    const mockResult = generateMockResult();
-    setResult(mockResult);
-    setStatus('done');
   }, []);
 
   const reset = useCallback(() => {
-    abortRef.current = true;
+    // Batalkan request yang sedang berjalan
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
+
     setStatus('idle');
     setCurrentStep(-1);
     setResult(null);
