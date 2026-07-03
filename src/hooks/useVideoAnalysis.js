@@ -74,14 +74,25 @@ export default function useVideoAnalysis() {
       // Parse response
       const data = await response.json();
 
+      // Cek error no_face terlebih dahulu (sebelum cek response.ok)
+      if (data.error === 'no_face') {
+        clearTimeout(progressTimer);
+        clearTimeout(detectTimer);
+        clearTimeout(analyzeTimer);
+        setCurrentStep(2); // Berhenti di step "Deteksi Wajah"
+        setStatus('detecting');
+        // Delay sedikit agar user melihat progress bar berhenti di Deteksi Wajah
+        await new Promise(r => setTimeout(r, 800));
+        setError('__NO_FACE__');
+        setStatus('error');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(data.error || `Server error: ${response.status}`);
       }
 
       if (data.error) {
-        if (data.error === 'no_face') {
-          throw new Error('__NO_FACE__');
-        }
         throw new Error(data.error);
       }
 

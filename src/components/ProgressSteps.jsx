@@ -31,9 +31,13 @@ export default function ProgressSteps({ currentStep, status }) {
 
   if (status === 'idle') return null;
 
+  const isError = status === 'error';
+
   const progressPercent = status === 'done'
     ? 100
-    : Math.min(((currentStep + 1) / 5) * 100, 100);
+    : isError
+      ? Math.min(((currentStep + 1) / 5) * 100, 100)
+      : Math.min(((currentStep + 1) / 5) * 100, 100);
 
   return (
     <section className="max-w-[640px] mx-auto px-4 sm:px-6 lg:px-10 pb-6 animate-slide-up">
@@ -50,21 +54,28 @@ export default function ProgressSteps({ currentStep, status }) {
           />
 
           {stepKeys.map((key, i) => {
-            const isCompleted = i < currentStep || status === 'done';
-            const isActive = i === currentStep && status !== 'done';
+            const isCompleted = (i < currentStep || status === 'done') && !(isError && i === currentStep);
+            const isActive = i === currentStep && status !== 'done' && !isError;
+            const isErrorStep = isError && i === currentStep;
 
             return (
               <div key={key} className="flex flex-col items-center relative z-10" style={{ width: '72px' }}>
                 <div
                   className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    isCompleted
-                      ? 'bg-primary text-white'
-                      : isActive
-                        ? 'bg-primary text-white animate-pulse-glow'
-                        : 'bg-bg-neutral text-text-disabled'
+                    isErrorStep
+                      ? 'bg-[#FF9800] text-white'
+                      : isCompleted
+                        ? 'bg-primary text-white'
+                        : isActive
+                          ? 'bg-primary text-white animate-pulse-glow'
+                          : 'bg-bg-neutral text-text-disabled'
                   }`}
                 >
-                  {isCompleted ? (
+                  {isErrorStep ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+                      <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                  ) : isCompleted ? (
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
@@ -73,7 +84,7 @@ export default function ProgressSteps({ currentStep, status }) {
                   )}
                 </div>
                 <span className={`text-[11px] mt-1.5 text-center font-semibold leading-tight ${
-                  isCompleted || isActive ? 'text-text' : 'text-text-disabled'
+                  isErrorStep ? 'text-[#FF9800]' : (isCompleted || isActive) ? 'text-text' : 'text-text-disabled'
                 }`}>
                   {t(key)}
                 </span>
@@ -85,21 +96,28 @@ export default function ProgressSteps({ currentStep, status }) {
         {/* Steps - mobile vertical */}
         <div className="sm:hidden space-y-2.5 mb-5">
           {stepKeys.map((key, i) => {
-            const isCompleted = i < currentStep || status === 'done';
-            const isActive = i === currentStep && status !== 'done';
+            const isCompleted = (i < currentStep || status === 'done') && !(isError && i === currentStep);
+            const isActive = i === currentStep && status !== 'done' && !isError;
+            const isErrorStep = isError && i === currentStep;
 
             return (
               <div key={key} className="flex items-center gap-3">
                 <div
                   className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all text-[11px] font-bold ${
-                    isCompleted
-                      ? 'bg-primary text-white'
-                      : isActive
-                        ? 'bg-primary text-white animate-pulse-glow'
-                        : 'bg-bg-neutral text-text-disabled'
+                    isErrorStep
+                      ? 'bg-[#FF9800] text-white'
+                      : isCompleted
+                        ? 'bg-primary text-white'
+                        : isActive
+                          ? 'bg-primary text-white animate-pulse-glow'
+                          : 'bg-bg-neutral text-text-disabled'
                   }`}
                 >
-                  {isCompleted ? (
+                  {isErrorStep ? (
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+                      <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                  ) : isCompleted ? (
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
@@ -107,7 +125,9 @@ export default function ProgressSteps({ currentStep, status }) {
                     i + 1
                   )}
                 </div>
-                <span className={`text-[13px] font-medium ${isCompleted || isActive ? 'text-text' : 'text-text-disabled'}`}>
+                <span className={`text-[13px] font-medium ${
+                  isErrorStep ? 'text-[#FF9800]' : (isCompleted || isActive) ? 'text-text' : 'text-text-disabled'
+                }`}>
                   {t(key)}
                 </span>
                 {isActive && (
@@ -124,11 +144,15 @@ export default function ProgressSteps({ currentStep, status }) {
         {/* Progress bar */}
         <div className="w-full bg-bg-neutral rounded-full h-1.5 overflow-hidden">
           <div
-            className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
+            className={`h-full rounded-full transition-all duration-700 ease-out ${
+              isError ? 'bg-[#FF9800]' : 'bg-primary'
+            }`}
             style={{ width: `${progressPercent}%` }}
           />
         </div>
-        <p className="text-[11px] text-text-disabled mt-1.5 text-right font-semibold">{Math.round(progressPercent)}%</p>
+        <p className={`text-[11px] mt-1.5 text-right font-semibold ${
+          isError ? 'text-[#FF9800]' : 'text-text-disabled'
+        }`}>{Math.round(progressPercent)}%</p>
       </div>
     </section>
   );

@@ -32,7 +32,9 @@ const translations = {
     'upload.errorFormat': 'Format file tidak didukung. Gunakan MP4, AVI, MOV, atau WEBM.',
     'upload.errorSize': 'Ukuran file melebihi batas 50 MB.',
     'upload.errorDuration': 'Durasi video melebihi batas 60 detik.',
-    'upload.errorNoFace': 'Tidak ada wajah yang terdeteksi dalam video. Pastikan video berisi wajah manusia.',
+    'upload.errorNoFaceTitle': 'Wajah Tidak Terdeteksi',
+    'upload.errorNoFace': 'Sistem tidak menemukan wajah manusia dalam video yang diunggah. Deteksi deepfake memerlukan video yang berisi wajah.',
+    'upload.errorNoFaceTip': 'Tips: Pastikan video memperlihatkan wajah manusia dengan jelas, pencahayaan cukup, dan wajah tidak tertutup.',
     'upload.errorGeneric': 'Terjadi kesalahan saat memproses file.',
 
     // Progress
@@ -125,7 +127,9 @@ const translations = {
     'upload.errorFormat': 'Unsupported file format. Please use MP4, AVI, MOV, or WEBM.',
     'upload.errorSize': 'File size exceeds the 50 MB limit.',
     'upload.errorDuration': 'Video duration exceeds the 60 second limit.',
-    'upload.errorNoFace': 'No face detected in the video. Please make sure the video contains a human face.',
+    'upload.errorNoFaceTitle': 'No Face Detected',
+    'upload.errorNoFace': 'The system could not find a human face in the uploaded video. Deepfake detection requires a video containing a face.',
+    'upload.errorNoFaceTip': 'Tip: Make sure the video clearly shows a human face, with adequate lighting, and the face is not obstructed.',
     'upload.errorGeneric': 'An error occurred while processing the file.',
 
     // Progress
