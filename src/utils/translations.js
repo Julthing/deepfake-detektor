@@ -31,6 +31,8 @@ const translations = {
     'upload.changeFile': 'Ganti File',
     'upload.errorFormat': 'Format file tidak didukung. Gunakan MP4, AVI, MOV, atau WEBM.',
     'upload.errorSize': 'Ukuran file melebihi batas 50 MB.',
+    'upload.errorDuration': 'Durasi video melebihi batas 60 detik.',
+    'upload.errorNoFace': 'Tidak ada wajah yang terdeteksi dalam video. Pastikan video berisi wajah manusia.',
     'upload.errorGeneric': 'Terjadi kesalahan saat memproses file.',
 
     // Progress
@@ -122,6 +124,8 @@ const translations = {
     'upload.changeFile': 'Change File',
     'upload.errorFormat': 'Unsupported file format. Please use MP4, AVI, MOV, or WEBM.',
     'upload.errorSize': 'File size exceeds the 50 MB limit.',
+    'upload.errorDuration': 'Video duration exceeds the 60 second limit.',
+    'upload.errorNoFace': 'No face detected in the video. Please make sure the video contains a human face.',
     'upload.errorGeneric': 'An error occurred while processing the file.',
 
     // Progress

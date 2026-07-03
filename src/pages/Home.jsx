@@ -51,15 +51,17 @@ export default function Home() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-[14px] font-bold text-text mb-1">Analisis Gagal</h3>
-                  <p className="text-[13px] text-text-secondary">{error}</p>
+                  <h3 className="text-[14px] font-bold text-text mb-1">{t('upload.errorGeneric').split('.')[0]}</h3>
+                  <p className="text-[13px] text-text-secondary">
+                    {error === '__NO_FACE__' ? t('upload.errorNoFace') : error}
+                  </p>
                 </div>
               </div>
               <button
                 onClick={handleReset}
                 className="w-full py-2.5 rounded-lg text-[14px] font-bold text-text-secondary hover:text-text bg-bg-neutral hover:bg-[rgba(145,158,171,0.2)] transition-all duration-200 cursor-pointer active:scale-[0.98]"
               >
-                Coba Lagi
+                {t('upload.changeFile')}
               </button>
             </div>
           </div>

@@ -7,6 +7,7 @@ const ALLOWED_MIME_TYPES = [
   'video/webm',
 ];
 const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
+const MAX_DURATION_SECONDS = 60; // 60 detik
 
 /**
  * Validates a video file for format and size constraints.
@@ -39,6 +40,37 @@ export function validateVideoFile(file) {
 }
 
 /**
+ * Validates video duration using HTML5 video element.
+ * @param {File} file
+ * @returns {Promise<{ valid: boolean, error: string|null, duration: number|null }>}
+ */
+export function validateVideoDuration(file) {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(video.src);
+      const duration = video.duration;
+
+      if (duration > MAX_DURATION_SECONDS) {
+        resolve({ valid: false, error: 'errorDuration', duration: Math.round(duration) });
+      } else {
+        resolve({ valid: true, error: null, duration: Math.round(duration) });
+      }
+    };
+
+    video.onerror = () => {
+      URL.revokeObjectURL(video.src);
+      // Jika tidak bisa membaca metadata, tetap izinkan (backend akan menangani)
+      resolve({ valid: true, error: null, duration: null });
+    };
+
+    video.src = URL.createObjectURL(file);
+  });
+}
+
+/**
  * Formats file size in human-readable format.
  * @param {number} bytes
  * @returns {string}
@@ -50,3 +82,4 @@ export function formatFileSize(bytes) {
   const size = (bytes / Math.pow(1024, i)).toFixed(i > 1 ? 2 : 0);
   return `${size} ${units[i]}`;
 }
+

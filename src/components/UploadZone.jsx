@@ -1,20 +1,36 @@
 import { useState, useRef, useCallback } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { validateVideoFile, formatFileSize } from '../utils/validation';
+import { validateVideoFile, validateVideoDuration, formatFileSize } from '../utils/validation';
 
 export default function UploadZone({ onFileSelect, file, isAnalyzing, onAnalyze }) {
   const { t } = useLanguage();
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState(null);
+  const [checking, setChecking] = useState(false);
   const inputRef = useRef(null);
 
-  const handleFile = useCallback((selectedFile) => {
+  const handleFile = useCallback(async (selectedFile) => {
     setError(null);
     const validation = validateVideoFile(selectedFile);
     if (!validation.valid) {
       setError(t(`upload.${validation.error}`));
       return;
     }
+
+    // Cek durasi video (async)
+    setChecking(true);
+    try {
+      const durationCheck = await validateVideoDuration(selectedFile);
+      if (!durationCheck.valid) {
+        setError(t(`upload.${durationCheck.error}`, { duration: durationCheck.duration }));
+        setChecking(false);
+        return;
+      }
+    } catch {
+      // Jika gagal cek durasi, lanjutkan saja
+    }
+    setChecking(false);
+
     onFileSelect(selectedFile);
   }, [onFileSelect, t]);
 

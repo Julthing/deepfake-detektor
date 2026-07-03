@@ -79,6 +79,9 @@ export default function useVideoAnalysis() {
       }
 
       if (data.error) {
+        if (data.error === 'no_face') {
+          throw new Error('__NO_FACE__');
+        }
         throw new Error(data.error);
       }
 
